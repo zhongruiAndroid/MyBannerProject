@@ -5,14 +5,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <android.support.v7.widget.RecyclerView
+    <com.github.banner.MyBannerView
+        android:id="@+id/banner"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@color/colorAccent"
+        app:autoPlay="true"
+        app:direction="horizontal"
+        app:indicatorDistance="1dp"
+        app:reverse="true"
+        app:timeInterval="1000"
+        app:timeScroll="500"
+        >
+    </com.github.banner.MyBannerView>
+
+    <Button
+        android:id="@+id/change"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="调整方向"
+        />
+
+    <!--<android.support.v7.widget.RecyclerView
         android:id="@+id/rv"
-        android:layout_width="200dp"
+        android:layout_width="match_parent"
         android:layout_height="200dp"
         android:background="#FFE28EAC"
         >
     </android.support.v7.widget.RecyclerView>
-
+-->
 </LinearLayout>

@@ -11,6 +11,9 @@ public class BannerItemManager<T>  {
     public void addBannerItem(BannerItem helper){
         helperSparseArray.put(helperSparseArray.size(),helper);
     }
+    public boolean hasMultiItem(){
+        return helperSparseArray!=null&&helperSparseArray.size()>0;
+    }
     public BannerItem getBannerItem(int viewType){
         return helperSparseArray.get(viewType);
     }
@@ -22,10 +25,10 @@ public class BannerItemManager<T>  {
                 return viewType;
             }
         }
-        throw new IllegalStateException("getItemViewType没有找到item布局");
+        throw new IllegalStateException("getItemViewType没有找到item布局,BannerItem.isItemType()请按需求返回true");
     }
 
-    public void bindData(BannerHolder holder,T item,int position,int dataCount){
+    public void bindData(BannerHolder holder, T item, int position, int dataCount){
         for (int i = 0; i < helperSparseArray.size(); i++) {
             BannerItem bannerItem = helperSparseArray.valueAt(i);
             if(bannerItem.isItemType(item,position,dataCount)){
@@ -33,6 +36,6 @@ public class BannerItemManager<T>  {
                 return;
             }
         }
-        throw new IllegalStateException("bindData没有找到item布局");
+        throw new IllegalStateException("bindData没有找到item布局,BannerItem.isItemType()请按需求返回true");
     };
 }

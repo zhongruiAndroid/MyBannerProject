@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/iv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        />
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:gravity="center"
+        android:text="多布局Banner"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:background="#FFF58EB4"
+        android:textSize="18sp"
+        />
+</RelativeLayout>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MyBannerView">
+        <attr name="direction" format="enum">
+            <enum name="horizontal" value="0"></enum>
+            <enum name="vertical" value="1"></enum>
+        </attr>
+        <attr name="timeInterval" format="integer"></attr>
+        <attr name="timeScroll" format="integer"></attr>
+        <attr name="autoPlay" format="boolean"></attr>
+        <attr name="reverse" format="boolean"></attr>
+        <attr name="useGesture" format="boolean"></attr>
+        <attr name="indicatorDistance" format="dimension"></attr>
+
+        <attr name="indicatorSelectDrawable" format="reference"></attr>
+        <attr name="indicatorUnSelectDrawable" format="reference"></attr>
+
+        <attr name="indicatorSelectLayout" format="reference"></attr>
+        <attr name="indicatorUnSelectLayout" format="reference"></attr>
+
+    </declare-styleable>
+</resources>
