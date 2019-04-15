@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         iv=findViewById(R.id.iv);
-        MyBannerView banner = findViewById(R.id.banner);
+        final MyBannerView banner = findViewById(R.id.banner);
         banner.setList(getList());
         banner.addBannerItem(new TestViewItem (this));
         banner.addBannerItem(new TestViewItem2(this));

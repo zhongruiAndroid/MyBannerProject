@@ -7,9 +7,8 @@ package com.github.banner;
 public interface BannerItem<T> {
     int getItemLayoutId();
 
-    default boolean isItemType(T item, int position, int dataCount){
-        return true;
-    };
+    boolean isItemType(T item, int position, int dataCount);
+
     void onItemClick(T item, int position, int dataCount);
 
     void bindData(BannerHolder holder, T item, int position, int dataCount);
