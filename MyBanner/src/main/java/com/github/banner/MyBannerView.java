@@ -163,7 +163,9 @@ public class MyBannerView extends RelativeLayout {
         if(recyclerView==null){
             return;
         }
-        new PagerSnapHelper().attachToRecyclerView(recyclerView);
+        if(recyclerView.getOnFlingListener()==null){
+            new PagerSnapHelper().attachToRecyclerView(recyclerView);
+        }
         layoutManager = new LayoutManager(getContext(), direction, reverse);
         layoutManager.setCalculateSpeedPerPixel(timeScroll, getWidth());
         recyclerView.setLayoutManager(layoutManager);
@@ -176,6 +178,9 @@ public class MyBannerView extends RelativeLayout {
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     if (pagerListener != null) {
                         int nowPosition = layoutManager.findFirstVisibleItemPosition();
+                        if(nowPosition==-1){
+                            return;
+                        }
 
                         int realBeforePosition = adapter.getRealDataPosition(beforeItemPosition);
                         int realNowPosition = adapter.getRealDataPosition(nowPosition);
@@ -204,6 +209,9 @@ public class MyBannerView extends RelativeLayout {
     }
 
     public void startAutoPlay() {
+        if(autoPlay==false){
+            return;
+        }
         handler.get().removeMessages(playBanner);
 
         message = handler.get().obtainMessage();
@@ -227,7 +235,6 @@ public class MyBannerView extends RelativeLayout {
     public boolean dispatchTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                Log.i("=====","===ACTION_DOWN11111==");
                 stopAutoPlay();
                 if (layoutManager != null) {
                     beforeItemPosition = layoutManager.findFirstVisibleItemPosition();
@@ -245,4 +252,92 @@ public class MyBannerView extends RelativeLayout {
     }
 
 
+    /*************************************bannerView 属性*********************************************/
+    public int getDirection() {
+        return direction;
+    }
+
+    public void setDirection(int direction) {
+        this.direction = direction;
+    }
+
+    public int getTimeInterval() {
+        return timeInterval;
+    }
+
+    public void setTimeInterval(int timeInterval) {
+        this.timeInterval = timeInterval;
+    }
+
+    public int getTimeScroll() {
+        return timeScroll;
+    }
+
+    public void setTimeScroll(int timeScroll) {
+        this.timeScroll = timeScroll;
+    }
+
+    public boolean isAutoPlay() {
+        return autoPlay;
+    }
+
+    public void setAutoPlay(boolean autoPlay) {
+        this.autoPlay = autoPlay;
+    }
+
+    public boolean isReverse() {
+        return reverse;
+    }
+
+    public void setReverse(boolean reverse) {
+        this.reverse = reverse;
+    }
+
+    public boolean isUseGesture() {
+        return useGesture;
+    }
+
+    public void setUseGesture(boolean useGesture) {
+        this.useGesture = useGesture;
+    }
+
+    public float getIndicatorDistance() {
+        return indicatorDistance;
+    }
+
+    public void setIndicatorDistance(float indicatorDistance) {
+        this.indicatorDistance = indicatorDistance;
+    }
+
+    public Drawable getIndicatorSelectDrawable() {
+        return indicatorSelectDrawable;
+    }
+
+    public void setIndicatorSelectDrawable(Drawable indicatorSelectDrawable) {
+        this.indicatorSelectDrawable = indicatorSelectDrawable;
+    }
+
+    public Drawable getIndicatorUnSelectDrawable() {
+        return indicatorUnSelectDrawable;
+    }
+
+    public void setIndicatorUnSelectDrawable(Drawable indicatorUnSelectDrawable) {
+        this.indicatorUnSelectDrawable = indicatorUnSelectDrawable;
+    }
+
+    public int getIndicatorSelectLayout() {
+        return indicatorSelectLayout;
+    }
+
+    public void setIndicatorSelectLayout(int indicatorSelectLayout) {
+        this.indicatorSelectLayout = indicatorSelectLayout;
+    }
+
+    public int getIndicatorUnSelectLayout() {
+        return indicatorUnSelectLayout;
+    }
+
+    public void setIndicatorUnSelectLayout(int indicatorUnSelectLayout) {
+        this.indicatorUnSelectLayout = indicatorUnSelectLayout;
+    }
 }

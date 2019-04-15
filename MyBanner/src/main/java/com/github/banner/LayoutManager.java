@@ -8,6 +8,8 @@ import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
+import java.math.BigDecimal;
+
 /***
  *   created by android on 2019/4/12
  */
@@ -42,6 +44,8 @@ public class LayoutManager extends LinearLayoutManager {
         if(width<=0){
             return;
         }
-        this.calculateSpeedPerPixel = timeScroll/width;
+        BigDecimal bigDecimal=new BigDecimal(timeScroll/width);
+        bigDecimal= bigDecimal.setScale(1,BigDecimal.ROUND_HALF_UP);
+        this.calculateSpeedPerPixel =bigDecimal.floatValue();
     }
 }

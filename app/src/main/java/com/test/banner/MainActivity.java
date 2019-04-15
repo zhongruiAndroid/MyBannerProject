@@ -45,15 +45,16 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("=====", beforePosition + "===onPageSelected===" + position);
             }
         });
-        banner.start();
+        banner.startAutoPlay();
 
         change=findViewById(R.id.change);
         change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                a=Math.abs(a-1);
+                banner.start();
+//                a=Math.abs(a-1);
 //                banner.refresh(a);
-                banner.startAutoPlay();
+//                banner.startAutoPlay();
             }
         });
     }
