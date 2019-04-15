@@ -27,12 +27,16 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity {
 
     Button change;
+    Button pause;
     int a=0;
+    ImageView iv;
+    boolean flag;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        iv=findViewById(R.id.iv);
         MyBannerView banner = findViewById(R.id.banner);
         banner.setList(getList());
         banner.addBannerItem(new TestViewItem (this));
@@ -48,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         banner.startAutoPlay();
 
         change=findViewById(R.id.change);
+        pause=findViewById(R.id.pause);
         change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,6 +60,17 @@ public class MainActivity extends AppCompatActivity {
 //                a=Math.abs(a-1);
 //                banner.refresh(a);
 //                banner.startAutoPlay();
+            }
+        });
+
+        pause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (banner.isAutoPlay()) {
+                    banner.stopAutoPlay();
+                }else{
+                    banner.startAutoPlay();
+                }
             }
         });
     }

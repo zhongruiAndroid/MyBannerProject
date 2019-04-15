@@ -10,10 +10,14 @@
         <attr name="autoPlay" format="boolean"></attr>
         <attr name="reverse" format="boolean"></attr>
         <attr name="useGesture" format="boolean"></attr>
+        <attr name="indicatorHidden" format="boolean"></attr>
         <attr name="indicatorDistance" format="dimension"></attr>
 
         <attr name="indicatorSelectDrawable" format="reference"></attr>
         <attr name="indicatorUnSelectDrawable" format="reference"></attr>
+        <attr name="indicatorSelectDrawableColor" format="color"></attr>
+        <attr name="indicatorUnSelectDrawableColor" format="color"></attr>
+
 
         <attr name="indicatorSelectLayout" format="reference"></attr>
         <attr name="indicatorUnSelectLayout" format="reference"></attr>

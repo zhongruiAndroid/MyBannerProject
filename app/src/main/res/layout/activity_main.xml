@@ -16,10 +16,15 @@
         app:autoPlay="true"
         app:direction="horizontal"
         app:indicatorDistance="1dp"
-        app:reverse="true"
-        app:timeInterval="6000"
+        app:reverse="false"
+        app:timeInterval="2000"
         app:timeScroll="600"
         >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="afds"
+            />
     </com.github.banner.MyBannerView>
 
     <Button
@@ -29,6 +34,12 @@
         android:text="调整方向"
         />
 
+    <Button
+        android:id="@+id/pause"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="暂停"
+        />
     <!--<android.support.v7.widget.RecyclerView
         android:id="@+id/rv"
         android:layout_width="match_parent"

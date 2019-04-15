@@ -1,20 +1,37 @@
 package com.github.banner;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.LinearGradient;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.annotation.ColorInt;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.github.banner.listener.OnPagerListener;
@@ -24,8 +41,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /***
  *   created by android on 2019/4/11
@@ -37,7 +52,6 @@ public class MyBannerView extends RelativeLayout {
     public static final int horizontal = 0;
     public static final int vertical = 1;
     private LayoutManager layoutManager;
-    private int beforeItemPosition;
 
 
     @IntDef({horizontal, vertical})
@@ -57,22 +71,37 @@ public class MyBannerView extends RelativeLayout {
     /*是否可以手动滑动*/
     private boolean useGesture = true;
     private float indicatorDistance = 20;
-    private Drawable indicatorSelectDrawable;
-    private Drawable indicatorUnSelectDrawable;
+
+    public Drawable indicatorSelectDrawable;
+    public Drawable indicatorUnSelectDrawable;
+    private int indicatorSelectDrawableColor = -1;
+    private int indicatorUnSelectDrawableColor = -1;
+    private int indicatorSelectDrawableWidth;
+    private int indicatorSelectDrawableHeight;
 
     private int indicatorSelectLayout = -1;
     private int indicatorUnSelectLayout = -1;
+
+    private List<ImageView> indicatorList = new ArrayList<>();
+    /*indicator预设置View*/
+    private ImageView preImageView;
+
+    private Drawable selectDrawable;
+    private Drawable unSelectDrawable;
     /**********************************************************************************/
 
+    private LinearLayout indicatorParent;
     private RecyclerView recyclerView;
     private MyBannerAdapter adapter;
     private List list = new ArrayList<>();
+    private int beforeItemPosition;
 
-    private WeakReference<Handler> handler;
-    private final int playBanner=1000;
+    private Handler handler;
+    private final int playBanner = 1000;
 
     private Runnable runnable;
     private Message message;
+
 
     public MyBannerView(Context context) {
         super(context);
@@ -94,46 +123,48 @@ public class MyBannerView extends RelativeLayout {
         direction = typedArray.getInt(R.styleable.MyBannerView_direction, horizontal);
         timeScroll = typedArray.getInt(R.styleable.MyBannerView_timeScroll, timeScroll);
         timeInterval = typedArray.getInt(R.styleable.MyBannerView_timeInterval, timeInterval);
-        timeInterval=timeInterval+timeScroll;
+        timeInterval = timeInterval + timeScroll;
         autoPlay = typedArray.getBoolean(R.styleable.MyBannerView_autoPlay, true);
         reverse = typedArray.getBoolean(R.styleable.MyBannerView_reverse, false);
         useGesture = typedArray.getBoolean(R.styleable.MyBannerView_useGesture, true);
         indicatorDistance = typedArray.getDimension(R.styleable.MyBannerView_indicatorDistance, indicatorDistance);
         indicatorSelectDrawable = typedArray.getDrawable(R.styleable.MyBannerView_indicatorSelectDrawable);
         indicatorUnSelectDrawable = typedArray.getDrawable(R.styleable.MyBannerView_indicatorUnSelectDrawable);
+        indicatorSelectDrawableColor = typedArray.getColor(R.styleable.MyBannerView_indicatorSelectDrawableColor, -1);
+        indicatorUnSelectDrawableColor = typedArray.getColor(R.styleable.MyBannerView_indicatorUnSelectDrawableColor, -1);
+
         indicatorSelectLayout = typedArray.getResourceId(R.styleable.MyBannerView_indicatorSelectLayout, -1);
         indicatorUnSelectLayout = typedArray.getResourceId(R.styleable.MyBannerView_indicatorUnSelectLayout, -1);
 
         typedArray.recycle();
 
-        runnable=new Runnable() {
+        runnable = new Runnable() {
             @Override
             public void run() {
                 bannerRunnable();
             }
         };
-        handler=new WeakReference<>(new Handler(Looper.myLooper()){
+        handler = new Handler(Looper.myLooper()) {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-                switch (msg.what){
+                switch (msg.what) {
                     case playBanner:
-                        handler.get().post(runnable);
-                        message = handler.get().obtainMessage();
-                        message.what=playBanner;
-                        handler.get().sendMessageDelayed(message,timeInterval);
-                    break;
+                        handler.post(runnable);
+                        message = handler.obtainMessage();
+                        message.what = playBanner;
+                        handler.sendMessageDelayed(message, timeInterval);
+                        break;
                 }
             }
-        });
+        };
 
         adapter = new MyBannerAdapter();
-        recyclerView=new RecyclerView(getContext());
-        recyclerView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        recyclerView = new RecyclerView(getContext());
+        recyclerView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         addView(recyclerView);
 
     }
-
 
 
     public List getList() {
@@ -151,19 +182,125 @@ public class MyBannerView extends RelativeLayout {
         post(new Runnable() {
             @Override
             public void run() {
+                initIndicator();
                 startPlay();
             }
         });
     }
+
+    private void initIndicator() {
+        if (indicatorParent != null) {
+            indicatorParent.removeAllViews();
+        }
+        indicatorList.clear();
+
+        int childCount = getChildCount();
+        for (int i = childCount - 1; i >= 0; i--) {
+            View childAt = getChildAt(i);
+            if (childAt instanceof LinearLayout) {
+                if (indicatorParent == null) {
+                    indicatorParent = (LinearLayout) childAt;
+                    indicatorParent.setTag(R.id.indicatorId, "banner");
+                }
+                LinearLayout indicatorViewGroup = (LinearLayout) childAt;
+                if (indicatorViewGroup.getTag(R.id.indicatorId) != null) {
+                    indicatorParent = indicatorViewGroup;
+                    break;
+                }
+            }
+        }
+
+        if (indicatorParent == null) {
+            indicatorParent = new LinearLayout(getContext());
+            indicatorParent.setTag(R.id.indicatorId, "banner");
+            LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+            layoutParams.bottomMargin = dp2Px(6);
+            layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            indicatorParent.setLayoutParams(layoutParams);
+            addView(indicatorParent);
+        }
+        addIndicatorToView(indicatorParent);
+
+
+    }
+
+    private void addIndicatorToView(LinearLayout linearLayout) {
+        //选择时的indicator
+        if (indicatorSelectLayout != -1) {
+            View selectView = LayoutInflater.from(getContext()).inflate(indicatorSelectLayout, null);
+            Bitmap bitmap = Bitmap.createBitmap(selectView.getWidth(), selectView.getHeight(), Bitmap.Config.ARGB_4444);
+            Canvas canvas = new Canvas(bitmap);
+            selectView.draw(canvas);
+            BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), bitmap);
+
+            selectDrawable = bitmapDrawable;
+
+        } else if (indicatorSelectDrawable != null) {
+            if (indicatorSelectDrawableColor != -1) {
+                indicatorSelectDrawable.mutate().setColorFilter(indicatorSelectDrawableColor, PorterDuff.Mode.SRC_ATOP);
+            }
+            selectDrawable = indicatorSelectDrawable;
+        } else {
+            if (indicatorSelectDrawableColor == -1) {
+                indicatorSelectDrawableColor = Color.GRAY;
+            }
+            //默认设置一个
+            selectDrawable = createDrawable(dp2Px(6), dp2Px(6), dp2Px(3), indicatorSelectDrawableColor);
+        }
+        //未选择
+        if (indicatorUnSelectLayout != -1) {
+            View unSelectView = LayoutInflater.from(getContext()).inflate(indicatorUnSelectLayout, null);
+
+            Bitmap bitmap = Bitmap.createBitmap(unSelectView.getWidth(), unSelectView.getHeight(), Bitmap.Config.ARGB_4444);
+            Canvas canvas = new Canvas(bitmap);
+            unSelectView.draw(canvas);
+            BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), bitmap);
+
+            unSelectDrawable = bitmapDrawable;
+        } else if (indicatorUnSelectDrawable != null) {
+            if (indicatorUnSelectDrawableColor != -1) {
+                indicatorUnSelectDrawable.mutate().setColorFilter(indicatorUnSelectDrawableColor, PorterDuff.Mode.SRC_ATOP);
+            }
+            unSelectDrawable = indicatorUnSelectDrawable;
+        } else {
+            if (indicatorUnSelectDrawableColor == -1) {
+                indicatorUnSelectDrawableColor = Color.WHITE;
+            }
+
+            //默认设置一个
+            unSelectDrawable = createDrawable(dp2Px(6), dp2Px(6), dp2Px(3), indicatorUnSelectDrawableColor);
+        }
+
+        int size = list == null ? 0 : list.size();
+        for (int i = 0; i < size; i++) {
+            ImageView imageView;
+            if (i == 0) {
+                imageView = new ImageView(getContext());
+                imageView.setImageDrawable(selectDrawable);
+            } else {
+                imageView = new ImageView(getContext());
+                imageView.setImageDrawable(unSelectDrawable);
+            }
+            if (i != size - 1) {
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                layoutParams.rightMargin = dp2Px(6);
+                imageView.setLayoutParams(layoutParams);
+            }
+            indicatorList.add(imageView);
+            linearLayout.addView(imageView);
+        }
+    }
+
     private void startPlay() {
-        if (adapter.hasMultiItem()==false) {
+        if (adapter.hasMultiItem() == false) {
             return;
         }
         adapter.setList(list);
-        if(recyclerView==null){
+        if (recyclerView == null) {
             return;
         }
-        if(recyclerView.getOnFlingListener()==null){
+        if (recyclerView.getOnFlingListener() == null) {
             new PagerSnapHelper().attachToRecyclerView(recyclerView);
         }
         layoutManager = new LayoutManager(getContext(), direction, reverse);
@@ -177,16 +314,31 @@ public class MyBannerView extends RelativeLayout {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     if (pagerListener != null) {
-                        int nowPosition = layoutManager.findFirstVisibleItemPosition();
-                        if(nowPosition==-1){
+                        int nowPosition = layoutManager.findFirstCompletelyVisibleItemPosition();
+                        if (nowPosition == -1) {
                             return;
                         }
 
                         int realBeforePosition = adapter.getRealDataPosition(beforeItemPosition);
                         int realNowPosition = adapter.getRealDataPosition(nowPosition);
-                        if(realBeforePosition!=realNowPosition){
-                            pagerListener.onPageSelected(list.get(realNowPosition),realNowPosition, realBeforePosition);
+
+                        //设置对应的indicator
+                        if (indicatorParent != null) {
+                            //预设置的indicator复原
+                            if (preImageView != null) {
+                                preImageView.setImageDrawable(unSelectDrawable);
+                            }
+                            if(indicatorList!=null&&realBeforePosition<indicatorList.size()&&realNowPosition<indicatorList.size()){
+                                indicatorList.get(realBeforePosition).setImageDrawable(unSelectDrawable);
+                                indicatorList.get(realNowPosition).setImageDrawable(selectDrawable);
+                            }
                         }
+
+                        if (realBeforePosition != realNowPosition) {
+                            pagerListener.onPageSelected(list.get(realNowPosition), realNowPosition, realBeforePosition);
+                            beforeItemPosition = realNowPosition;
+                        }
+
                     }
                 }
             }
@@ -195,32 +347,47 @@ public class MyBannerView extends RelativeLayout {
 
         startAutoPlay();
     }
-    public void refresh(int direction){
-        layoutManager.setOrientation(direction);
-        recyclerView.setLayoutManager(layoutManager);
-    }
+
+
     private void bannerRunnable() {
         if (recyclerView != null && layoutManager != null) {
 
-            beforeItemPosition = layoutManager.findFirstVisibleItemPosition();
-            recyclerView.smoothScrollToPosition(beforeItemPosition + 1);
+            int position = layoutManager.findFirstCompletelyVisibleItemPosition();
+            recyclerView.smoothScrollToPosition(position + 1);
 
+            int realPosition = adapter.getRealDataPosition(position);
+            int realNextPosition = adapter.getRealDataPosition(position + 1);
+
+            //滑动结束之前设置对应的indicator提升体验
+            if (indicatorParent != null&&indicatorList!=null) {
+                ImageView imageView = indicatorList.get(realPosition);
+                if (imageView != null) {
+                    imageView.setImageDrawable(unSelectDrawable);
+                }
+                preImageView = indicatorList.get(realNextPosition);
+                if (preImageView != null) {
+                    preImageView.setImageDrawable(selectDrawable);
+                }
+            }
         }
     }
 
     public void startAutoPlay() {
-        if(autoPlay==false){
+        if (autoPlay == false) {
             return;
         }
-        handler.get().removeMessages(playBanner);
+        handler.removeMessages(playBanner);
 
-        message = handler.get().obtainMessage();
-        message.what=playBanner;
-        handler.get().sendMessageDelayed(message,timeInterval);
+        message = handler.obtainMessage();
+        message.what = playBanner;
+        handler.sendMessageDelayed(message, timeInterval);
     }
 
     public void stopAutoPlay() {
-        handler.get().removeMessages(playBanner);
+        if (autoPlay == false) {
+            return;
+        }
+        handler.removeMessages(playBanner);
     }
 
     public <T> void addBannerItem(BannerItem<T> item) {
@@ -236,9 +403,6 @@ public class MyBannerView extends RelativeLayout {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 stopAutoPlay();
-                if (layoutManager != null) {
-                    beforeItemPosition = layoutManager.findFirstVisibleItemPosition();
-                }
                 break;
             case MotionEvent.ACTION_UP:
                 startAutoPlay();
@@ -339,5 +503,37 @@ public class MyBannerView extends RelativeLayout {
 
     public void setIndicatorUnSelectLayout(int indicatorUnSelectLayout) {
         this.indicatorUnSelectLayout = indicatorUnSelectLayout;
+    }
+
+    private int dp2Px(float dp) {
+        float scale = getContext().getResources().getDisplayMetrics().density;
+        return (int) (dp * scale + 0.5f);
+    }
+
+    private BitmapDrawable createDrawable(int width, int height, int cornerRadius, @ColorInt int filledColor) {
+        Bitmap output = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+        if (filledColor == 0) {
+            filledColor = Color.TRANSPARENT;
+        }
+        if (cornerRadius > 0) {
+            Paint paint = new Paint();
+            paint.setAntiAlias(true);
+            paint.setStyle(Paint.Style.FILL);
+            paint.setColor(filledColor);
+            canvas.drawRoundRect(new RectF(0, 0, width, height), cornerRadius, cornerRadius, paint);
+        } else {
+            canvas.drawColor(filledColor);
+        }
+        return new BitmapDrawable(getResources(), output);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (handler != null) {
+            handler.removeMessages(playBanner);
+            handler = null;
+        }
     }
 }
