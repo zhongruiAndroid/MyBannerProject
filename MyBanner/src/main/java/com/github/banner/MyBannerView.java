@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -63,21 +64,24 @@ public class MyBannerView extends RelativeLayout {
     /*轮播时间间隔*/
     private int timeInterval = 6000;
     /*滚动时间*/
-    private int timeScroll = 800;
+    private int timeScroll = 600;
     /*是否自动轮播*/
     private boolean autoPlay = true;
     /*true:从左往右(从下往上)，false:从右往左(从上往下)*/
     private boolean reverse = false;
     /*是否可以手动滑动*/
     private boolean useGesture = true;
-    private float indicatorDistance = 20;
+    private boolean indicatorHidden=false;
+    private int indicatorDistance ;
 
     public Drawable indicatorSelectDrawable;
     public Drawable indicatorUnSelectDrawable;
     private int indicatorSelectDrawableColor = -1;
     private int indicatorUnSelectDrawableColor = -1;
-    private int indicatorSelectDrawableWidth;
-    private int indicatorSelectDrawableHeight;
+    private int indicatorDrawableWidth= -1;
+    private int indicatorDrawableHeight= -1;
+    private int indicatorDrawableRadius;
+
 
     private int indicatorSelectLayout = -1;
     private int indicatorUnSelectLayout = -1;
@@ -86,6 +90,7 @@ public class MyBannerView extends RelativeLayout {
     /*indicator预设置View*/
     private ImageView preImageView;
 
+    /*保存不同状态的indicator*/
     private Drawable selectDrawable;
     private Drawable unSelectDrawable;
     /**********************************************************************************/
@@ -127,11 +132,16 @@ public class MyBannerView extends RelativeLayout {
         autoPlay = typedArray.getBoolean(R.styleable.MyBannerView_autoPlay, true);
         reverse = typedArray.getBoolean(R.styleable.MyBannerView_reverse, false);
         useGesture = typedArray.getBoolean(R.styleable.MyBannerView_useGesture, true);
-        indicatorDistance = typedArray.getDimension(R.styleable.MyBannerView_indicatorDistance, indicatorDistance);
+        indicatorHidden = typedArray.getBoolean(R.styleable.MyBannerView_indicatorHidden, false);
+        indicatorDistance = (int) typedArray.getDimension(R.styleable.MyBannerView_indicatorDistance, dp2Px(6));
         indicatorSelectDrawable = typedArray.getDrawable(R.styleable.MyBannerView_indicatorSelectDrawable);
         indicatorUnSelectDrawable = typedArray.getDrawable(R.styleable.MyBannerView_indicatorUnSelectDrawable);
         indicatorSelectDrawableColor = typedArray.getColor(R.styleable.MyBannerView_indicatorSelectDrawableColor, -1);
         indicatorUnSelectDrawableColor = typedArray.getColor(R.styleable.MyBannerView_indicatorUnSelectDrawableColor, -1);
+
+        indicatorDrawableWidth  = (int) typedArray.getDimension(R.styleable.MyBannerView_indicatorDrawableWidth,-1);
+        indicatorDrawableHeight = (int) typedArray.getDimension(R.styleable.MyBannerView_indicatorDrawableHeight, -1);
+        indicatorDrawableRadius = (int) typedArray.getDimension(R.styleable.MyBannerView_indicatorDrawableRadius, 0);
 
         indicatorSelectLayout = typedArray.getResourceId(R.styleable.MyBannerView_indicatorSelectLayout, -1);
         indicatorUnSelectLayout = typedArray.getResourceId(R.styleable.MyBannerView_indicatorUnSelectLayout, -1);
@@ -164,6 +174,7 @@ public class MyBannerView extends RelativeLayout {
         recyclerView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         addView(recyclerView);
 
+
     }
 
 
@@ -182,6 +193,7 @@ public class MyBannerView extends RelativeLayout {
         post(new Runnable() {
             @Override
             public void run() {
+                beforeItemPosition=0;
                 initIndicator();
                 startPlay();
             }
@@ -189,6 +201,7 @@ public class MyBannerView extends RelativeLayout {
     }
 
     private void initIndicator() {
+
         if (indicatorParent != null) {
             indicatorParent.removeAllViews();
         }
@@ -240,13 +253,21 @@ public class MyBannerView extends RelativeLayout {
             if (indicatorSelectDrawableColor != -1) {
                 indicatorSelectDrawable.mutate().setColorFilter(indicatorSelectDrawableColor, PorterDuff.Mode.SRC_ATOP);
             }
+            if(indicatorDrawableWidth>0&&indicatorDrawableHeight>0){
+                indicatorUnSelectDrawable.setBounds(new Rect(0,0,indicatorDrawableWidth,indicatorDrawableHeight));
+            }
             selectDrawable = indicatorSelectDrawable;
         } else {
             if (indicatorSelectDrawableColor == -1) {
                 indicatorSelectDrawableColor = Color.GRAY;
             }
+
             //默认设置一个
-            selectDrawable = createDrawable(dp2Px(6), dp2Px(6), dp2Px(3), indicatorSelectDrawableColor);
+            if(indicatorDrawableWidth>0&&indicatorDrawableHeight>0){
+                selectDrawable = createDrawable(indicatorDrawableWidth,indicatorDrawableHeight,indicatorDrawableRadius, indicatorSelectDrawableColor);
+            }else{
+                selectDrawable = createDrawable(dp2Px(6), dp2Px(6), dp2Px(3), indicatorSelectDrawableColor);
+            }
         }
         //未选择
         if (indicatorUnSelectLayout != -1) {
@@ -262,31 +283,36 @@ public class MyBannerView extends RelativeLayout {
             if (indicatorUnSelectDrawableColor != -1) {
                 indicatorUnSelectDrawable.mutate().setColorFilter(indicatorUnSelectDrawableColor, PorterDuff.Mode.SRC_ATOP);
             }
+
+            if(indicatorDrawableWidth>0&&indicatorDrawableHeight>0){
+                indicatorUnSelectDrawable.setBounds(new Rect(0,0,indicatorDrawableWidth,indicatorDrawableHeight));
+            }
             unSelectDrawable = indicatorUnSelectDrawable;
         } else {
             if (indicatorUnSelectDrawableColor == -1) {
                 indicatorUnSelectDrawableColor = Color.WHITE;
             }
-
             //默认设置一个
-            unSelectDrawable = createDrawable(dp2Px(6), dp2Px(6), dp2Px(3), indicatorUnSelectDrawableColor);
+            if(indicatorDrawableWidth>0&&indicatorDrawableHeight>0){
+                unSelectDrawable = createDrawable(indicatorDrawableWidth,indicatorDrawableHeight, indicatorDrawableRadius, indicatorUnSelectDrawableColor);
+            }else{
+                unSelectDrawable = createDrawable(dp2Px(6), dp2Px(6), dp2Px(3), indicatorUnSelectDrawableColor);
+            }
+
         }
 
         int size = list == null ? 0 : list.size();
         for (int i = 0; i < size; i++) {
-            ImageView imageView;
+            ImageView imageView= new ImageView(getContext());
             if (i == 0) {
-                imageView = new ImageView(getContext());
                 imageView.setImageDrawable(selectDrawable);
             } else {
-                imageView = new ImageView(getContext());
                 imageView.setImageDrawable(unSelectDrawable);
             }
-            if (i != size - 1) {
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                layoutParams.rightMargin = dp2Px(6);
-                imageView.setLayoutParams(layoutParams);
-            }
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            int mg=indicatorDistance/2;
+            layoutParams.setMargins(mg,mg,mg,mg);
+            imageView.setLayoutParams(layoutParams);
             indicatorList.add(imageView);
             linearLayout.addView(imageView);
         }
@@ -352,13 +378,16 @@ public class MyBannerView extends RelativeLayout {
     private void bannerRunnable() {
         if (recyclerView != null && layoutManager != null) {
 
-            int position = layoutManager.findFirstCompletelyVisibleItemPosition();
+            int position = layoutManager.findFirstVisibleItemPosition();
             recyclerView.smoothScrollToPosition(position + 1);
 
             int realPosition = adapter.getRealDataPosition(position);
             int realNextPosition = adapter.getRealDataPosition(position + 1);
 
-            //滑动结束之前设置对应的indicator提升体验
+            if(realPosition<=0||realNextPosition<=0){
+                return;
+            }
+            //自动滑动结束之前设置对应的indicator提升体验
             if (indicatorParent != null&&indicatorList!=null) {
                 ImageView imageView = indicatorList.get(realPosition);
                 if (imageView != null) {
@@ -465,11 +494,19 @@ public class MyBannerView extends RelativeLayout {
         this.useGesture = useGesture;
     }
 
-    public float getIndicatorDistance() {
+    public boolean isIndicatorHidden() {
+        return indicatorHidden;
+    }
+
+    public void setIndicatorHidden(boolean indicatorHidden) {
+        this.indicatorHidden = indicatorHidden;
+    }
+
+    public int getIndicatorDistance() {
         return indicatorDistance;
     }
 
-    public void setIndicatorDistance(float indicatorDistance) {
+    public void setIndicatorDistance(int indicatorDistance) {
         this.indicatorDistance = indicatorDistance;
     }
 
@@ -487,6 +524,22 @@ public class MyBannerView extends RelativeLayout {
 
     public void setIndicatorUnSelectDrawable(Drawable indicatorUnSelectDrawable) {
         this.indicatorUnSelectDrawable = indicatorUnSelectDrawable;
+    }
+
+    public int getIndicatorDrawableWidth() {
+        return indicatorDrawableWidth;
+    }
+
+    public void setIndicatorDrawableWidth(int indicatorDrawableWidth) {
+        this.indicatorDrawableWidth = indicatorDrawableWidth;
+    }
+
+    public int getIndicatorDrawableHeight() {
+        return indicatorDrawableHeight;
+    }
+
+    public void setIndicatorDrawableHeight(int indicatorDrawableHeight) {
+        this.indicatorDrawableHeight = indicatorDrawableHeight;
     }
 
     public int getIndicatorSelectLayout() {
@@ -526,6 +579,30 @@ public class MyBannerView extends RelativeLayout {
             canvas.drawColor(filledColor);
         }
         return new BitmapDrawable(getResources(), output);
+    }
+
+    public int getIndicatorSelectDrawableColor() {
+        return indicatorSelectDrawableColor;
+    }
+
+    public void setIndicatorSelectDrawableColor(int indicatorSelectDrawableColor) {
+        this.indicatorSelectDrawableColor = indicatorSelectDrawableColor;
+    }
+
+    public int getIndicatorUnSelectDrawableColor() {
+        return indicatorUnSelectDrawableColor;
+    }
+
+    public void setIndicatorUnSelectDrawableColor(int indicatorUnSelectDrawableColor) {
+        this.indicatorUnSelectDrawableColor = indicatorUnSelectDrawableColor;
+    }
+
+    public int getIndicatorDrawableRadius() {
+        return indicatorDrawableRadius;
+    }
+
+    public void setIndicatorDrawableRadius(int indicatorDrawableRadius) {
+        this.indicatorDrawableRadius = indicatorDrawableRadius;
     }
 
     @Override

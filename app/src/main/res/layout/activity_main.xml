@@ -15,16 +15,19 @@
         android:background="@color/colorAccent"
         app:autoPlay="true"
         app:direction="horizontal"
-        app:indicatorDistance="1dp"
+        app:indicatorDistance="16dp"
+        app:indicatorDrawableHeight="16dp"
+        app:indicatorDrawableRadius="8dp"
+        app:indicatorDrawableWidth="16dp"
+        app:indicatorSelectDrawableColor="#000000"
+        app:indicatorUnSelectDrawableColor="@color/colorPrimaryDark"
         app:reverse="false"
         app:timeInterval="2000"
         app:timeScroll="600"
+        app:useGesture="false"
         >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="afds"
-            />
+
+
     </com.github.banner.MyBannerView>
 
     <Button

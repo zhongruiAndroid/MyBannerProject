@@ -17,6 +17,9 @@
         <attr name="indicatorUnSelectDrawable" format="reference"></attr>
         <attr name="indicatorSelectDrawableColor" format="color"></attr>
         <attr name="indicatorUnSelectDrawableColor" format="color"></attr>
+        <attr name="indicatorDrawableWidth" format="dimension"></attr>
+        <attr name="indicatorDrawableHeight" format="dimension"></attr>
+        <attr name="indicatorDrawableRadius" format="dimension"></attr>
 
 
         <attr name="indicatorSelectLayout" format="reference"></attr>
