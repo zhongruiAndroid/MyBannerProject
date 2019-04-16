@@ -29,17 +29,10 @@
         android:textAllCaps="false"
         />
     <Button
-        android:id="@+id/btCustomLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="自定义布局-indicator"
-        android:textAllCaps="false"
-        />
-    <Button
         android:id="@+id/btLocation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="自定义控制indicator位置"
+        android:text="控制indicator位置"
         android:textAllCaps="false"
         />
 </LinearLayout>

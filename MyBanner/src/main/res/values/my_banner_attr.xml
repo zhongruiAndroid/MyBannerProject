@@ -21,9 +21,5 @@
         <attr name="indicatorDrawableHeight" format="dimension"></attr>
         <attr name="indicatorDrawableRadius" format="dimension"></attr>
 
-
-        <attr name="indicatorSelectLayout" format="reference"></attr>
-        <attr name="indicatorUnSelectLayout" format="reference"></attr>
-
     </declare-styleable>
 </resources>

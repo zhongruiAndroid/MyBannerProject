@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
@@ -21,6 +22,7 @@ import android.os.Message;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
+import android.support.v4.graphics.BitmapCompat;
 import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -81,8 +83,6 @@ public class MyBannerView extends RelativeLayout {
     private int indicatorDrawableRadius;
 
 
-    private int indicatorSelectLayout = -1;
-    private int indicatorUnSelectLayout = -1;
 
     private List<ImageView> indicatorList = new ArrayList<>();
     /*indicator预设置View*/
@@ -141,8 +141,6 @@ public class MyBannerView extends RelativeLayout {
         indicatorDrawableHeight = (int) typedArray.getDimension(R.styleable.MyBannerView_indicatorDrawableHeight, -1);
         indicatorDrawableRadius = (int) typedArray.getDimension(R.styleable.MyBannerView_indicatorDrawableRadius, 0);
 
-        indicatorSelectLayout = typedArray.getResourceId(R.styleable.MyBannerView_indicatorSelectLayout, -1);
-        indicatorUnSelectLayout = typedArray.getResourceId(R.styleable.MyBannerView_indicatorUnSelectLayout, -1);
 
         typedArray.recycle();
 
@@ -239,29 +237,16 @@ public class MyBannerView extends RelativeLayout {
     }
 
     private void addIndicatorToView(LinearLayout linearLayout) {
-        //选择时的indicator
-        if (indicatorSelectLayout != -1) {
-            View selectView = LayoutInflater.from(getContext()).inflate(indicatorSelectLayout, null);
-            Bitmap bitmap = Bitmap.createBitmap(selectView.getWidth(), selectView.getHeight(), Bitmap.Config.ARGB_4444);
-            Canvas canvas = new Canvas(bitmap);
-            selectView.draw(canvas);
-            BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), bitmap);
-
-            selectDrawable = bitmapDrawable;
-
-        } else if (indicatorSelectDrawable != null) {
+        //选择
+        if (indicatorSelectDrawable != null) {
             if (indicatorSelectDrawableColor != -1) {
                 indicatorSelectDrawable.mutate().setColorFilter(indicatorSelectDrawableColor, PorterDuff.Mode.SRC_ATOP);
-            }
-            if(indicatorDrawableWidth>0&&indicatorDrawableHeight>0){
-                indicatorUnSelectDrawable.setBounds(new Rect(0,0,indicatorDrawableWidth,indicatorDrawableHeight));
             }
             selectDrawable = indicatorSelectDrawable;
         } else {
             if (indicatorSelectDrawableColor == -1) {
                 indicatorSelectDrawableColor = Color.GRAY;
             }
-
             //默认设置一个
             if(indicatorDrawableWidth>0&&indicatorDrawableHeight>0){
                 selectDrawable = createDrawable(indicatorDrawableWidth,indicatorDrawableHeight,indicatorDrawableRadius, indicatorSelectDrawableColor);
@@ -270,23 +255,11 @@ public class MyBannerView extends RelativeLayout {
             }
         }
         //未选择
-        if (indicatorUnSelectLayout != -1) {
-            View unSelectView = LayoutInflater.from(getContext()).inflate(indicatorUnSelectLayout, null);
-
-            Bitmap bitmap = Bitmap.createBitmap(unSelectView.getWidth(), unSelectView.getHeight(), Bitmap.Config.ARGB_4444);
-            Canvas canvas = new Canvas(bitmap);
-            unSelectView.draw(canvas);
-            BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), bitmap);
-
-            unSelectDrawable = bitmapDrawable;
-        } else if (indicatorUnSelectDrawable != null) {
+        if (indicatorUnSelectDrawable != null) {
             if (indicatorUnSelectDrawableColor != -1) {
                 indicatorUnSelectDrawable.mutate().setColorFilter(indicatorUnSelectDrawableColor, PorterDuff.Mode.SRC_ATOP);
             }
 
-            if(indicatorDrawableWidth>0&&indicatorDrawableHeight>0){
-                indicatorUnSelectDrawable.setBounds(new Rect(0,0,indicatorDrawableWidth,indicatorDrawableHeight));
-            }
             unSelectDrawable = indicatorUnSelectDrawable;
         } else {
             if (indicatorUnSelectDrawableColor == -1) {
@@ -309,7 +282,11 @@ public class MyBannerView extends RelativeLayout {
             } else {
                 imageView.setImageDrawable(unSelectDrawable);
             }
+
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            if(indicatorDrawableWidth>0&&indicatorDrawableHeight>0){
+                layoutParams = new LinearLayout.LayoutParams(indicatorDrawableWidth,indicatorDrawableHeight);
+            }
             int mg=indicatorDistance/2;
             layoutParams.setMargins(mg,mg,mg,mg);
             imageView.setLayoutParams(layoutParams);
@@ -554,23 +531,7 @@ public class MyBannerView extends RelativeLayout {
         this.indicatorDrawableHeight = indicatorDrawableHeight;
     }
 
-    public int getIndicatorSelectLayout() {
-        return indicatorSelectLayout;
-    }
-
-    public void setIndicatorSelectLayout(int indicatorSelectLayout) {
-        this.indicatorSelectLayout = indicatorSelectLayout;
-    }
-
-    public int getIndicatorUnSelectLayout() {
-        return indicatorUnSelectLayout;
-    }
-
-    public void setIndicatorUnSelectLayout(int indicatorUnSelectLayout) {
-        this.indicatorUnSelectLayout = indicatorUnSelectLayout;
-    }
-
-    private int dp2Px(float dp) {
+    public int dp2Px(float dp) {
         float scale = getContext().getResources().getDisplayMetrics().density;
         return (int) (dp * scale + 0.5f);
     }

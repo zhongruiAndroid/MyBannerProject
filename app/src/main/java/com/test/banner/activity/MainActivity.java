@@ -13,8 +13,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button btSingle;
     Button btMulti;
     Button btCustomDrawable;
-    Button btCustomLayout;
     Button btLocation;
+    private Intent intent;
 
 
     @Override
@@ -25,14 +25,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btSingle = findViewById(R.id.btSingle);
         btMulti = findViewById(R.id.btMulti);
         btCustomDrawable = findViewById(R.id.btCustomDrawable);
-        btCustomLayout = findViewById(R.id.btCustomLayout);
         btLocation = findViewById(R.id.btLocation);
 
 
         btSingle.setOnClickListener(this);
         btMulti.setOnClickListener(this);
         btCustomDrawable.setOnClickListener(this);
-        btCustomLayout.setOnClickListener(this);
         btLocation.setOnClickListener(this);
     }
 
@@ -47,10 +45,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(this, MultiBannerActivity.class));
                 break;
             case R.id.btCustomDrawable:
-                startActivity(new Intent(this, CustomDrawableActivity.class));
-                break;
-            case R.id.btCustomLayout:
-                startActivity(new Intent(this, CustomLayoutActivity.class));
+                intent = new Intent(this, MultiBannerActivity.class);
+                intent.putExtra(MultiBannerActivity.intent_type,MultiBannerActivity.type_custom_drawable);
+                startActivity(intent);
                 break;
             case R.id.btLocation:
                 startActivity(new Intent(this, LocationActivity.class));

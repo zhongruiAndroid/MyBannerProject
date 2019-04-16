@@ -2,6 +2,8 @@ package com.test.banner.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +23,9 @@ import com.test.banner.viewitem.TestViewItem2;
 import com.test.banner.viewitem.TestViewItem3;
 
 public class MultiBannerActivity extends AppCompatActivity {
+    public static final String intent_type="intent_type";
+    public static final int type_custom_drawable=1;
+    public static final int type_custom_layout=2;
 
     Activity activity;
     MyBannerView banner;
@@ -43,8 +48,19 @@ public class MultiBannerActivity extends AppCompatActivity {
 
         setClickListener();
 
-        initData();
 
+        int type = getIntent().getIntExtra(intent_type, 0);
+        if(type==type_custom_drawable){
+            /*自定义drawable-indicator*/
+
+            /*设置indicator间距*/
+            banner.setIndicatorDistance(banner.dp2Px(8));
+            /*设置indicator drawable*/
+            /*如果drawable是设置的shape且两种状态的宽高不一致，建议在shape.xml中指定宽高，banner和布局则不用另外设置(只针对选中indicator和没选中indicator宽高不一致的情况)*/
+            banner.setIndicatorSelectDrawable(getResources().getDrawable(R.drawable.indicator_select));
+            banner.setIndicatorUnSelectDrawable(getResources().getDrawable(R.drawable.indicator_normal));
+        }
+        initData();
     }
 
     private void initData() {
