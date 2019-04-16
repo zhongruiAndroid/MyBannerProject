@@ -18,8 +18,6 @@
         app:timeInterval="2000"
         app:timeScroll="600"
         app:useGesture="true"
-        app:indicatorSelectLayout="@layout/indicator_check"
-        app:indicatorUnSelectLayout="@layout/indicator_check"
         >
     </com.github.banner.MyBannerView>
     <include layout="@layout/public_layout"/>

@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".activity.BannerActivity">
+
     <com.github.banner.MyBannerView
         android:id="@+id/banner"
         android:layout_width="match_parent"
@@ -16,8 +17,8 @@
         app:direction="horizontal"
         app:indicatorDistance="8dp"
         app:indicatorDrawableHeight="8dp"
-        app:indicatorDrawableWidth="8dp"
         app:indicatorDrawableRadius="4dp"
+        app:indicatorDrawableWidth="8dp"
         app:indicatorSelectDrawableColor="#000000"
         app:indicatorUnSelectDrawableColor="#FFFDFBFB"
         app:reverse="false"
@@ -25,6 +26,30 @@
         app:timeScroll="600"
         app:useGesture="true"
         >
+        <LinearLayout
+            android:id="@+id/ll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            >
+        </LinearLayout>
     </com.github.banner.MyBannerView>
+    <Button
+        android:id="@+id/btLeft"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="indicator布局居左"
+        android:textAllCaps="false"
+        />
+
+    <Button
+        android:id="@+id/btOrder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="indicator垂直排列"
+        android:textAllCaps="false"
+        />
     <include layout="@layout/public_layout"/>
 </LinearLayout>
