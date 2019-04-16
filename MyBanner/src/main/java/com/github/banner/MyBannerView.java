@@ -536,6 +536,10 @@ public class MyBannerView extends RelativeLayout {
         return (int) (dp * scale + 0.5f);
     }
 
+    public LinearLayout getIndicatorParent() {
+        return indicatorParent;
+    }
+
     private BitmapDrawable createDrawable(int width, int height, int cornerRadius, @ColorInt int filledColor) {
         Bitmap output = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(output);

@@ -25,7 +25,7 @@ public class StringUrlViewItem implements BannerItem<String> {
     @Override
     public boolean isItemType(String item, int position, int dataCount) {
         /*如果是单布局banner，此处一定要返回true*/
-        return true;
+        return true;//注意！注意！注意！注意！注意！注意！注意！注意！注意！
     }
     @Override
     public void onItemClick(String item, int position, int dataCount) {

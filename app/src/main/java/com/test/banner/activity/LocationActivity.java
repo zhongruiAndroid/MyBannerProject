@@ -128,15 +128,21 @@ public class LocationActivity extends AppCompatActivity {
         btLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*如果想控制indicator所在布局的位置，只需要在MyBannerView布局标签中放一个LinearLayout，控制它在布局中的位置即可*/
                 RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-                ll.setLayoutParams(layoutParams);
+
+//                ll.setLayoutParams(layoutParams);
+                /*或者*/
+                banner.getIndicatorParent().setLayoutParams(layoutParams);
             }
         });
         btOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ll.setOrientation(LinearLayout.VERTICAL);
+//                ll.setOrientation(LinearLayout.VERTICAL);
+                /*或者*/
+                banner.getIndicatorParent().setOrientation(LinearLayout.VERTICAL);
             }
         });
     }
