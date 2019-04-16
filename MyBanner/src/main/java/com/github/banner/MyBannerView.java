@@ -96,7 +96,7 @@ public class MyBannerView extends RelativeLayout {
     /**********************************************************************************/
 
     private LinearLayout indicatorParent;
-    private RecyclerView recyclerView;
+    private BannerRecyclerView recyclerView;
     private MyBannerAdapter adapter;
     private List list = new ArrayList<>();
     private int beforeItemPosition;
@@ -170,7 +170,9 @@ public class MyBannerView extends RelativeLayout {
         };
 
         adapter = new MyBannerAdapter();
-        recyclerView = new RecyclerView(getContext());
+        recyclerView = new BannerRecyclerView(getContext());
+        recyclerView.setUseGesture(useGesture);
+
         recyclerView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         addView(recyclerView);
 
@@ -384,7 +386,7 @@ public class MyBannerView extends RelativeLayout {
             int realPosition = adapter.getRealDataPosition(position);
             int realNextPosition = adapter.getRealDataPosition(position + 1);
 
-            if(realPosition<=0||realNextPosition<=0){
+            if(realPosition<0||realNextPosition<0){
                 return;
             }
             //自动滑动结束之前设置对应的indicator提升体验
@@ -429,16 +431,19 @@ public class MyBannerView extends RelativeLayout {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                stopAutoPlay();
-                break;
-            case MotionEvent.ACTION_UP:
-                startAutoPlay();
-                break;
-            case MotionEvent.ACTION_CANCEL:
-                startAutoPlay();
-                break;
+        if(useGesture){
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    stopAutoPlay();
+                    break;
+                case MotionEvent.ACTION_UP:
+                    startAutoPlay();
+                    break;
+                case MotionEvent.ACTION_CANCEL:
+                    startAutoPlay();
+                    break;
+            }
+
         }
 
         return super.dispatchTouchEvent(event);
@@ -492,6 +497,9 @@ public class MyBannerView extends RelativeLayout {
 
     public void setUseGesture(boolean useGesture) {
         this.useGesture = useGesture;
+        if(recyclerView!=null){
+            recyclerView.setUseGesture(useGesture);
+        }
     }
 
     public boolean isIndicatorHidden() {

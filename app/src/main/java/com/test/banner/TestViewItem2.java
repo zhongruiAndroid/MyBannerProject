@@ -32,11 +32,13 @@ public class TestViewItem2 implements com.github.banner.BannerItem<TestBean> {
         Toast.makeText(activity,"点击"+position+"下标的"+item.title,Toast.LENGTH_SHORT).show();
     }
     @Override
-    public void bindData(BannerHolder holder, TestBean item, int position, int dataCount) {
+    public void bindData(BannerHolder holder, TestBean item, final int position, int dataCount) {
         ImageView iv = holder.getView(R.id.iv);
         Glide.with(iv.getContext()).load(item.imageUrl).into(iv);
 
         TextView title = holder.getView(R.id.title);
         title.setText(item.title);
+
+
     }
 }
