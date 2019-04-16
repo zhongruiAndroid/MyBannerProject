@@ -30,7 +30,8 @@ public class MainActivity extends AppCompatActivity {
     Button pause;
     int a=0;
     ImageView iv;
-    boolean flag;
+    boolean flag=true;
+    boolean flag2=true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,28 +50,31 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("=====", beforePosition + "===onPageSelected===" + position);
             }
         });
-        banner.startAutoPlay();
+        banner.start();
 
         change=findViewById(R.id.change);
         pause=findViewById(R.id.pause);
         change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                banner.start();
-//                a=Math.abs(a-1);
-//                banner.refresh(a);
-//                banner.startAutoPlay();
+                if (flag2) {
+                    banner.setDirection(RecyclerView.VERTICAL);
+                }else{
+                    banner.setDirection(RecyclerView.HORIZONTAL);
+                }
+                flag2=!flag2;
             }
         });
 
         pause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (banner.isAutoPlay()) {
+                if (flag) {
                     banner.stopAutoPlay();
                 }else{
                     banner.startAutoPlay();
                 }
+                flag=!flag;
             }
         });
     }

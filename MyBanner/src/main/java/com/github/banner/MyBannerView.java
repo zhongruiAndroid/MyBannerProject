@@ -50,17 +50,15 @@ public class MyBannerView extends RelativeLayout {
     /**********************************************************************************/
     private OnPagerListener pagerListener;
 
-    public static final int horizontal = 0;
-    public static final int vertical = 1;
     private LayoutManager layoutManager;
 
 
-    @IntDef({horizontal, vertical})
+    @IntDef({RecyclerView.HORIZONTAL, RecyclerView.VERTICAL})
     @Retention(RetentionPolicy.SOURCE)
     public @interface orientation {
     }
 
-    private int direction = horizontal;
+    private int direction = RecyclerView.HORIZONTAL;
     /*轮播时间间隔*/
     private int timeInterval = 6000;
     /*滚动时间*/
@@ -125,7 +123,7 @@ public class MyBannerView extends RelativeLayout {
 
     private void init(AttributeSet attrs) {
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.MyBannerView);
-        direction = typedArray.getInt(R.styleable.MyBannerView_direction, horizontal);
+        direction = typedArray.getInt(R.styleable.MyBannerView_direction, RecyclerView.HORIZONTAL);
         timeScroll = typedArray.getInt(R.styleable.MyBannerView_timeScroll, timeScroll);
         timeInterval = typedArray.getInt(R.styleable.MyBannerView_timeInterval, timeInterval);
         timeInterval = timeInterval + timeScroll;
@@ -455,8 +453,11 @@ public class MyBannerView extends RelativeLayout {
         return direction;
     }
 
-    public void setDirection(int direction) {
+    public void setDirection(@orientation int direction) {
         this.direction = direction;
+        if(layoutManager!=null){
+            layoutManager.setOrientation(direction);
+        }
     }
 
     public int getTimeInterval() {

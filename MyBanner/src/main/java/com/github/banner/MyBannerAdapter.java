@@ -20,7 +20,7 @@ import java.util.List;
  *   created by android on 2019/4/11
  */
 public class MyBannerAdapter<T> extends RecyclerView.Adapter<BannerHolder> {
-    private long click_interval = 900; // 阻塞时间间隔
+    private long click_interval = 800; // 阻塞时间间隔
     private long lastClickTime;
 
     private List<T> list=new ArrayList<>();
