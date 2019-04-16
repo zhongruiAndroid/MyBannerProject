@@ -1,4 +1,4 @@
-package com.test.banner;
+package com.test.banner.viewitem;
 
 import android.app.Activity;
 import android.view.View;
@@ -8,6 +8,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.github.banner.BannerHolder;
+import com.test.banner.R;
+import com.test.banner.TestBean;
 
 /***
  *   created by android on 2019/4/12
@@ -25,6 +27,7 @@ public class TestViewItem2 implements com.github.banner.BannerItem<TestBean> {
     }
     @Override
     public boolean isItemType(TestBean item, int position, int dataCount) {
+        /*如果itemType==2 使用item2.xml布局*/
         return item.itemType==2;
     }
     @Override
@@ -39,6 +42,7 @@ public class TestViewItem2 implements com.github.banner.BannerItem<TestBean> {
         TextView title = holder.getView(R.id.title);
         title.setText(item.title);
 
+        holder.setText(R.id.title2,item.title);
 
     }
 }

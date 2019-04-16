@@ -6,49 +6,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
-
-    <com.github.banner.MyBannerView
-        android:id="@+id/banner"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@color/colorAccent"
-        app:autoPlay="true"
-        app:direction="horizontal"
-        app:indicatorDistance="16dp"
-        app:indicatorDrawableHeight="16dp"
-        app:indicatorDrawableRadius="8dp"
-        app:indicatorDrawableWidth="16dp"
-        app:indicatorSelectDrawableColor="#000000"
-        app:indicatorUnSelectDrawableColor="@color/colorPrimaryDark"
-        app:reverse="false"
-        app:timeInterval="2000"
-        app:timeScroll="600"
-        app:useGesture="false"
-        >
-
-
-    </com.github.banner.MyBannerView>
-
+    tools:context=".activity.MainActivity">
     <Button
-        android:id="@+id/change"
+        android:id="@+id/btSingle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="调整方向"
+        android:text="单布局Banner"
+        android:textAllCaps="false"
         />
-
     <Button
-        android:id="@+id/pause"
+        android:id="@+id/btMulti"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="暂停"
+        android:text="多布局Banner"
+        android:textAllCaps="false"
         />
-    <!--<android.support.v7.widget.RecyclerView
-        android:id="@+id/rv"
+    <Button
+        android:id="@+id/btCustomDrawable"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="#FFE28EAC"
-        >
-    </android.support.v7.widget.RecyclerView>
--->
+        android:layout_height="wrap_content"
+        android:text="自定义Drawable-indicator"
+        android:textAllCaps="false"
+        />
+    <Button
+        android:id="@+id/btCustomLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="自定义布局-indicator"
+        android:textAllCaps="false"
+        />
+    <Button
+        android:id="@+id/btLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="自定义控制indicator位置"
+        android:textAllCaps="false"
+        />
 </LinearLayout>

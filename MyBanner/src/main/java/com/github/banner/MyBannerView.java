@@ -402,7 +402,7 @@ public class MyBannerView extends RelativeLayout {
     }
 
     public void startAutoPlay() {
-        if (autoPlay == false) {
+        if (autoPlay == false||layoutManager==null) {
             return;
         }
         handler.removeMessages(playBanner);
@@ -490,6 +490,9 @@ public class MyBannerView extends RelativeLayout {
 
     public void setReverse(boolean reverse) {
         this.reverse = reverse;
+        if(layoutManager!=null){
+            layoutManager.setReverseLayout(reverse);
+        }
     }
 
     public boolean isUseGesture() {

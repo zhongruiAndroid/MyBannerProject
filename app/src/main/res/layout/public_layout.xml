@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <Button
+        android:id="@+id/btChangeDirection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="切换轮播方向"
+        />
+    <Button
+        android:id="@+id/btChangeOrder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="切换滑动方向(从左往右or从左往右)"
+        android:textAllCaps="false"
+        />
+    <Button
+        android:id="@+id/btStop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="跳转Activity暂停轮播"
+        android:textAllCaps="false"
+        />
+    <CheckBox
+        android:id="@+id/cbUseGesture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="是否可以手势滑动"
+        />
+</LinearLayout>

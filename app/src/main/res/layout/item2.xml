@@ -16,6 +16,17 @@
         android:layout_height="140dp"
         android:gravity="center"
         android:text="多布局Banner"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:background="#FFF58EB4"
+        android:textSize="18sp"
+        />
+    <TextView
+        android:id="@+id/title2"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:gravity="center"
+        android:text="多布局Banner"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:background="#FFF58EB4"
