@@ -158,3 +158,14 @@ protected void onPause() {
         </LinearLayout>
     </com.github.banner.MyBannerView>
 ```
+
+
+<br/>  
+
+| 最新版本号  | [ ![Download](https://api.bintray.com/packages/zhongrui/mylibrary/MyBanner/images/download.svg) ](https://bintray.com/zhongrui/mylibrary/MyBanner/_latestVersion)  |
+|---|---|  
+
+
+```gradle
+implementation 'com.github:MyBanner:版本号在上面'
+```
