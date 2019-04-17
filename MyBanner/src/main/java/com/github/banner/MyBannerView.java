@@ -204,7 +204,9 @@ public class MyBannerView extends RelativeLayout {
             indicatorParent.removeAllViews();
         }
         indicatorList.clear();
-
+        if(indicatorHidden==true){
+            return;
+        }
         int childCount = getChildCount();
         for (int i = childCount - 1; i >= 0; i--) {
             View childAt = getChildAt(i);
