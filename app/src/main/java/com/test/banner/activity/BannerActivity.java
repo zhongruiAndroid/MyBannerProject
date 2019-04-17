@@ -72,13 +72,6 @@ public class BannerActivity extends AppCompatActivity {
         banner.stopAutoPlay();
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        banner.stopAutoPlay();
-
-    }
-
     private void setClickListener() {
         btChangeDirection.setOnClickListener(new View.OnClickListener() {
             @Override
