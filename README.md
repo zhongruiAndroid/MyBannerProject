@@ -1,3 +1,7 @@
+![github](https://github.com/zhongruiAndroid/MyBannerProject/blob/master/image/banner_img.gif)
+## [Demo.apk下载](https://raw.githubusercontent.com/zhongruiAndroid/MyBannerProject/master/apk/demo.apk)
+
+
 | 属性                           | 说明                                                                 | 类型      | 默认值                  |
 |--------------------------------|----------------------------------------------------------------------|-----------|-------------------------|
 | direction                      | 轮播图滚动方向<br/>RecyclerView.HORIZONTAL<br/>RecyclerView.VERTICAL | integer   | RecyclerView.HORIZONTAL |
