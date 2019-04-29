@@ -60,6 +60,7 @@ public class MyBannerView extends RelativeLayout {
     public @interface orientation {
     }
 
+    private int bannerHeight =-1;
     private int direction = RecyclerView.HORIZONTAL;
     /*轮播时间间隔*/
     private int timeInterval = 6000;
@@ -123,6 +124,7 @@ public class MyBannerView extends RelativeLayout {
 
     private void init(AttributeSet attrs) {
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.MyBannerView);
+        bannerHeight = (int) typedArray.getDimension(R.styleable.MyBannerView_bannerHeight, -1);
         direction = typedArray.getInt(R.styleable.MyBannerView_direction, RecyclerView.HORIZONTAL);
         timeScroll = typedArray.getInt(R.styleable.MyBannerView_timeScroll, timeScroll);
         timeInterval = typedArray.getInt(R.styleable.MyBannerView_timeInterval, timeInterval);
@@ -168,8 +170,11 @@ public class MyBannerView extends RelativeLayout {
         adapter = new MyBannerAdapter();
         recyclerView = new BannerRecyclerView(getContext());
         recyclerView.setUseGesture(useGesture);
-
-        recyclerView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        if(bannerHeight>0){
+            recyclerView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,bannerHeight));
+        }else{
+            recyclerView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        }
         addView(recyclerView);
 
 
@@ -427,7 +432,19 @@ public class MyBannerView extends RelativeLayout {
     }
 
 
+    public int getBannerHeight() {
+        return bannerHeight;
+    }
+
+    public void setBannerHeight(int bannerHeight) {
+        this.bannerHeight = bannerHeight;
+        if(recyclerView!=null&&this.bannerHeight>0){
+            recyclerView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,bannerHeight));
+        }
+    }
+
     /*************************************bannerView 属性*********************************************/
+
     public int getDirection() {
         return direction;
     }

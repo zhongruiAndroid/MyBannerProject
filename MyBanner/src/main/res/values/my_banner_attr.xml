@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="MyBannerView">
+        <attr name="bannerHeight" format="dimension"></attr>
         <attr name="direction" format="enum">
             <enum name="horizontal" value="0"></enum>
             <enum name="vertical" value="1"></enum>
