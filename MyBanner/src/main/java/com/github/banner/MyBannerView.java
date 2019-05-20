@@ -604,9 +604,11 @@ public class MyBannerView extends RelativeLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if (handler != null) {
-            handler.removeMessages(playBanner);
-            handler = null;
-        }
+        stopAutoPlay();
+    }
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        startAutoPlay();
     }
 }

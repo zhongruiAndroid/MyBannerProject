@@ -77,6 +77,9 @@ public class MyBannerAdapter<T> extends RecyclerView.Adapter<BannerHolder> {
     }
 
     public int getRealDataPosition(int position){
+        if(getRealCount()==0){
+            return 0;
+        }
         return position%getRealCount();
     }
     public T getItem(int position){
