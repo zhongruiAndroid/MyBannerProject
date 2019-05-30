@@ -149,6 +149,9 @@ public class MyBannerView extends RelativeLayout {
         runnable = new Runnable() {
             @Override
             public void run() {
+                if(getList()==null||getList().size()==0){
+                    return;
+                }
                 bannerRunnable();
             }
         };
@@ -386,7 +389,7 @@ public class MyBannerView extends RelativeLayout {
     }
 
     public void startAutoPlay() {
-        if (autoPlay == false||layoutManager==null) {
+        if (autoPlay == false||layoutManager==null||getList()==null||getList().size()==0) {
             return;
         }
         handler.removeMessages(playBanner);
