@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.github.banner.BannerHolder;
 import com.github.banner.BannerItem;
 import com.github.banner.MyBannerView;
+import com.github.banner.listener.OnPagerListener;
 import com.test.banner.R;
 
 import java.util.List;
@@ -75,6 +76,12 @@ public class BannerVM extends BaseVM {
     /*商品详情*/
     public void setBannerData(List<String> imageList) {
         banner.setList(imageList);
+        banner.setPagerListener(new OnPagerListener() {
+            @Override
+            public void onPageSelected(Object item, int position, int beforePosition) {
+
+            }
+        });
         banner.addBannerItem(new BannerItem<String>() {
             @Override
             public int getItemLayoutId() {

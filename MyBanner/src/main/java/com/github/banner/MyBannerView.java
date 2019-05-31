@@ -327,7 +327,7 @@ public class MyBannerView extends FrameLayout {
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (pagerListener != null) {
+
                         int nowPosition = layoutManager.findFirstCompletelyVisibleItemPosition();
                         if (nowPosition == -1) {
                             return;
@@ -349,11 +349,12 @@ public class MyBannerView extends FrameLayout {
                         }
 
                         if (realBeforePosition != realNowPosition) {
-                            pagerListener.onPageSelected(list.get(realNowPosition), realNowPosition, realBeforePosition);
+                            if (pagerListener != null) {
+                                pagerListener.onPageSelected(list.get(realNowPosition), realNowPosition, realBeforePosition);
+                            }
                             beforeItemPosition = realNowPosition;
                         }
 
-                    }
                 }
             }
         });
