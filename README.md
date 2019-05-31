@@ -156,8 +156,8 @@ protected void onPause() {
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="bottom|center_horizontal"
             >
         </LinearLayout>
     </com.github.banner.MyBannerView>
