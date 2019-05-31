@@ -34,7 +34,7 @@ public class TestActivity extends AppCompatActivity {
 
 
         BannerVM bannerVM=new BannerVM(activity);
-        bannerVM.setBannerHeight(PhoneUtils.dipToPx(activity,200),PhoneUtils.dipToPx(activity,170));
+        bannerVM.setBannerHeight(PhoneUtils.dipToPx(activity,200),PhoneUtils.dipToPx(activity,200));
         bannerVM.setBannerData(ImageURL.getStringURLList());
 
         ll.addView(bannerVM.getBannerView());

@@ -54,14 +54,14 @@ public class BannerVM extends BaseVM {
 
     public void setBannerHeight(int height, final int viewHeight) {
         if (banner != null) {
-            if (banner.getLayoutParams() != null) {
+            /*if (banner.getLayoutParams() != null) {
                 banner.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
                 banner.getLayoutParams().height = height;
             } else {
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
                 banner.setLayoutParams(layoutParams);
-            }
-
+            }*/
+            banner.setViewHeight(height);
             banner.setBannerHeight(viewHeight);
 
         }

@@ -446,6 +446,15 @@ public class MyBannerView extends FrameLayout {
             recyclerView.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,bannerHeight));
         }
     }
+    public void setViewHeight(int viewHeight){
+        ViewGroup.LayoutParams layoutParams = getLayoutParams();
+        if(layoutParams!=null){
+            layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+            layoutParams.height = viewHeight;
+        }else{
+            setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, viewHeight));
+        }
+    }
 
     /*************************************bannerView 属性*********************************************/
 
