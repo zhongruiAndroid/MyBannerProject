@@ -29,10 +29,12 @@ import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -48,7 +50,7 @@ import java.util.List;
 /***
  *   created by android on 2019/4/11
  */
-public class MyBannerView extends RelativeLayout {
+public class MyBannerView extends FrameLayout {
     /**********************************************************************************/
     private OnPagerListener pagerListener;
 
@@ -174,9 +176,9 @@ public class MyBannerView extends RelativeLayout {
         recyclerView = new BannerRecyclerView(getContext());
         recyclerView.setUseGesture(useGesture);
         if(bannerHeight>0){
-            recyclerView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,bannerHeight));
+            recyclerView.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,bannerHeight));
         }else{
-            recyclerView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            recyclerView.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         }
         addView(recyclerView);
 
@@ -236,8 +238,7 @@ public class MyBannerView extends RelativeLayout {
             indicatorParent.setTag(R.id.indicatorId, "banner");
             LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
             layoutParams.bottomMargin = dp2Px(6);
-            layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            layoutParams.gravity=Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL;
             indicatorParent.setLayoutParams(layoutParams);
             addView(indicatorParent);
         }
@@ -442,7 +443,7 @@ public class MyBannerView extends RelativeLayout {
     public void setBannerHeight(int bannerHeight) {
         this.bannerHeight = bannerHeight;
         if(recyclerView!=null&&this.bannerHeight>0){
-            recyclerView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,bannerHeight));
+            recyclerView.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,bannerHeight));
         }
     }
 
