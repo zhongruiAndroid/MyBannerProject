@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button btMulti;
     Button btCustomDrawable;
     Button btLocation;
+    Button btTest;
     private Intent intent;
 
 
@@ -27,6 +28,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btCustomDrawable = findViewById(R.id.btCustomDrawable);
         btLocation = findViewById(R.id.btLocation);
 
+        btTest = findViewById(R.id.btTest);
+        btTest.setOnClickListener(this);
 
         btSingle.setOnClickListener(this);
         btMulti.setOnClickListener(this);
@@ -51,6 +54,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btLocation:
                 startActivity(new Intent(this, LocationActivity.class));
+                break;
+            case R.id.btTest:
+                startActivity(new Intent(this, TestActivity.class));
                 break;
         }
     }
