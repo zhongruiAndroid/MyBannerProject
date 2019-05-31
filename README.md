@@ -131,7 +131,7 @@ protected void onPause() {
 
 ---
 #### 控制indicator位置(指示器)
-##### MyBannerView继承RelativeLayout
+##### MyBannerView继承FrameLayout
 > 在**MyBannerView**内部添加一个空的**LinearLayout**,设置对应属性即可控制所在位置,如果不添加LinearLayout则默认添加一个**底部居中**的LinearLayout指示器视图。如果布局中有**多个**LinearLayout,则取最后一个LinearLayout当做指示器视图
 ##### 
 ```xml
