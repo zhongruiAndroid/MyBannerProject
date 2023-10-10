@@ -1,12 +1,13 @@
 package com.github.banner;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
-import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
+import androidx.recyclerview.widget.RecyclerView;
 
 /***
  *   created by android on 2019/4/11

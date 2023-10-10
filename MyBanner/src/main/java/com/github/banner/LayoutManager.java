@@ -1,19 +1,19 @@
 package com.github.banner;
 
 import android.content.Context;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.LinearSmoothScroller;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSmoothScroller;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.math.BigDecimal;
 
 /***
  *   created by android on 2019/4/12
  */
-public class LayoutManager extends LinearLayoutManager {
+class LayoutManager extends LinearLayoutManager {
     private float calculateSpeedPerPixel=0.4f;
     public LayoutManager(Context context) {
         super(context);

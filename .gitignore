@@ -9,5 +9,4 @@
 .externalNativeBuild
 .gradle/
 .idea/
-/build
-help.gradle
+build

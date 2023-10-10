@@ -2,9 +2,7 @@ package com.test.banner.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -12,8 +10,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.banner.MyBannerView;
 import com.github.banner.listener.OnPagerListener;
@@ -85,12 +87,6 @@ public class LocationActivity extends AppCompatActivity {
         banner.stopAutoPlay();
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        banner.stopAutoPlay();
-
-    }
 
     private void setClickListener() {
         btChangeDirection.setOnClickListener(new View.OnClickListener() {
@@ -129,8 +125,8 @@ public class LocationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 /*如果想控制indicator所在布局的位置，只需要在MyBannerView布局标签中放一个LinearLayout，控制它在布局中的位置即可*/
-                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+                FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                layoutParams.gravity= Gravity.LEFT;
 
 //                ll.setLayoutParams(layoutParams);
                 /*或者*/

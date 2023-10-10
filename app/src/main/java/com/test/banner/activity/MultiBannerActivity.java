@@ -2,16 +2,15 @@ package com.test.banner.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.banner.MyBannerView;
 import com.github.banner.listener.OnPagerListener;
@@ -95,18 +94,12 @@ public class MultiBannerActivity extends AppCompatActivity {
         banner.stopAutoPlay();
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        banner.stopAutoPlay();
-
-    }
 
     private void setClickListener() {
         btChangeDirection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(banner.getDirection()==RecyclerView.HORIZONTAL){
+                if(banner.getDirection()== RecyclerView.HORIZONTAL){
                     btChangeOrder.setText("切换滑动方向(从上往下or从下往上)");
                     banner.setDirection(RecyclerView.VERTICAL);
                 }else{

@@ -1,8 +1,9 @@
 package com.test.banner.activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.test.banner.R;
 

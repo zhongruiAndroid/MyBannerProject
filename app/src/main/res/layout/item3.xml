@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<com.zr.RelativeLayoutAdapt xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    app:layout_adapt_width="500dp"
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/iv"
+        app:layout_adapt_width="500dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
-        android:scaleType="fitXY"
-        />
+        android:scaleType="fitXY" />
+
     <TextView
         android:id="@+id/title"
+        app:layout_adapt_width="500dp"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:background="#8EF5E6"
         android:gravity="center"
         android:text="多布局Banner"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:background="#FFF58EB4"
-        android:textSize="18sp"
-        />
-</RelativeLayout>
+        android:textSize="18sp" />
+</com.zr.RelativeLayoutAdapt>

@@ -2,20 +2,24 @@ package com.test.banner.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.banner.MyBannerView;
 import com.github.banner.listener.OnPagerListener;
 import com.test.banner.ImageURL;
-import com.test.banner.R;
+import com.test.banner.PhoneUtils;
 import com.test.banner.viewitem.StringUrlViewItem;
+import com.test.banner.vm.BannerVM;
+import com.test.banner.R;
 
 public class BannerActivity extends AppCompatActivity {
     Activity activity;
@@ -24,12 +28,14 @@ public class BannerActivity extends AppCompatActivity {
     Button btChangeOrder;
     Button btStop;
     CheckBox cbUseGesture;
+    LinearLayout ll;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity=this;
         setContentView(R.layout.activity_banner);
 
+        ll=findViewById(R.id.ll);
         banner=findViewById(R.id.banner);
         btStop=findViewById(R.id.btStop);
         cbUseGesture=findViewById(R.id.cbUseGesture);
@@ -39,7 +45,24 @@ public class BannerActivity extends AppCompatActivity {
 
         setClickListener();
 
+        /*if (banner != null) {
+            if (banner.getLayoutParams() != null) {
+                banner.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
+                banner.getLayoutParams().height = PhoneUtils.dipToPx(activity,230);
+            } else {
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, PhoneUtils.dipToPx(activity,230));
+                banner.setLayoutParams(layoutParams);
+            }
+            banner.setBannerHeight(PhoneUtils.dipToPx(activity,200));
+        }*/
+
         initData();
+
+        BannerVM bannerVM=new BannerVM(activity);
+        bannerVM.setBannerHeight(PhoneUtils.dipToPx(activity,200));
+
+        bannerVM.setBannerData(ImageURL.getStringURLList());
+        ll.addView(bannerVM.getBannerView());
 
     }
 
@@ -72,18 +95,11 @@ public class BannerActivity extends AppCompatActivity {
         banner.stopAutoPlay();
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        banner.stopAutoPlay();
-
-    }
-
     private void setClickListener() {
         btChangeDirection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(banner.getDirection()==RecyclerView.HORIZONTAL){
+                if(banner.getDirection()== RecyclerView.HORIZONTAL){
                     btChangeOrder.setText("切换滑动方向(从上往下or从下往上)");
                     banner.setDirection(RecyclerView.VERTICAL);
                 }else{

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="MyBannerView">
+        <attr name="bannerHeight" format="dimension"></attr>
         <attr name="direction" format="enum">
             <enum name="horizontal" value="0"></enum>
             <enum name="vertical" value="1"></enum>
@@ -20,6 +21,9 @@
         <attr name="indicatorDrawableWidth" format="dimension"></attr>
         <attr name="indicatorDrawableHeight" format="dimension"></attr>
         <attr name="indicatorDrawableRadius" format="dimension"></attr>
+        <attr name="android:clipToPadding" format="boolean"></attr>
+        <attr name="horizontalSlideOffset" format="dimension"></attr>
+        <attr name="verticalSlideOffset" format="dimension"></attr>
 
     </declare-styleable>
 </resources>
