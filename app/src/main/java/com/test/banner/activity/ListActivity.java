@@ -94,9 +94,9 @@ public class ListActivity extends AppCompatActivity {
         app:timeScroll="600"
         app:useGesture="true"*/
 
-        rootView.post(new Runnable() {
+       /* rootView.post(new Runnable() {
             @Override
-            public void run() {
+            public void run() {*/
                 float sizeRatio = rootView.getSizeRatio();
 
                 banner = new MyBannerView(ListActivity.this);
@@ -105,6 +105,8 @@ public class ListActivity extends AppCompatActivity {
                 banner.setDirection(RecyclerView.HORIZONTAL);
                 banner.setHorizontalSlideScale(sizeRatio);
                 banner.setReverse(false);
+                banner.setDetachReset(false);
+//                banner.setBannerPadding(20,20,20,20);
                 banner.setUseGesture(true);
                 banner.setTimeInterval(500);
                 banner.setTimeScroll(3000);
@@ -137,8 +139,8 @@ public class ListActivity extends AppCompatActivity {
 
                 adapter.addHeaderView(banner);
                 adapter.notifyDataSetChanged();
-            }
-        });
+//            }
+        /*});*/
 
     }
 }

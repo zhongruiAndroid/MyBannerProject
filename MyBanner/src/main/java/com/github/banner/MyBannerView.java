@@ -415,10 +415,19 @@ public class MyBannerView extends FrameLayout {
             int position = layoutManager.findFirstVisibleItemPosition();
 //            recyclerView.smoothScrollToPosition(position + 1);
 
-            if (layoutManager.getOrientation() == RecyclerView.HORIZONTAL) {
-                recyclerView.smoothScrollBy((int) (isReverse() ? -getHorizontalSlideOffset()*getHorizontalSlideScale() : getHorizontalSlideOffset()*getHorizontalSlideScale()), 0, getInterpolator(), timeScroll);
-            } else {
-                recyclerView.smoothScrollBy(0, (int) (isReverse() ? -getVerticalSlideOffset()*getVerticalSlideScale() : getVerticalSlideOffset()*getVerticalSlideScale()), getInterpolator(), timeScroll);
+            View childAt = recyclerView.getChildAt(0);
+            if(childAt!=null){
+                if (layoutManager.getOrientation() == RecyclerView.HORIZONTAL) {
+                    recyclerView.smoothScrollBy((isReverse() ? -childAt.getMeasuredWidth(): childAt.getMeasuredWidth()), 0, getInterpolator(), timeScroll);
+                } else {
+                    recyclerView.smoothScrollBy(0,(isReverse() ? -childAt.getMeasuredHeight() : childAt.getMeasuredHeight()), getInterpolator(), timeScroll);
+                }
+            }else{
+                if (layoutManager.getOrientation() == RecyclerView.HORIZONTAL) {
+                    recyclerView.smoothScrollBy((int) (isReverse() ? -getHorizontalSlideOffset()*getHorizontalSlideScale() : getHorizontalSlideOffset()*getHorizontalSlideScale()), 0, getInterpolator(), timeScroll);
+                } else {
+                    recyclerView.smoothScrollBy(0, (int) (isReverse() ? -getVerticalSlideOffset()*getVerticalSlideScale() : getVerticalSlideOffset()*getVerticalSlideScale()), getInterpolator(), timeScroll);
+                }
             }
 
             int realPosition = adapter.getRealDataPosition(position);
