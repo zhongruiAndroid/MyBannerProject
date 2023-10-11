@@ -748,8 +748,8 @@ public class MyBannerView extends FrameLayout {
                 childAt = recyclerView.getChildAt(1);
             }
             if (childAt != null) {
-                int hOffset = isReverse() ? -childAt.getLeft() : childAt.getLeft();
-                int vOffset = isReverse() ? -childAt.getTop() : childAt.getTop();
+                int hOffset = childAt.getLeft();
+                int vOffset = childAt.getTop();
                 if (getDirection() == RecyclerView.HORIZONTAL) {
                     if (hOffset != 0) {
                         float totalHOffset = getHorizontalSlideOffset();
